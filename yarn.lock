@@ -23,6 +23,10 @@ agent-base@^4.1.0:
   dependencies:
     es6-promisify "^5.0.0"
 
+any-base@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/any-base/-/any-base-1.1.0.tgz#ae101a62bc08a597b4c9ab5b7089d456630549fe"
+
 array-flatten@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
@@ -784,6 +788,13 @@ setprototypeof@1.0.3:
 setprototypeof@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
+
+short-uuid@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/short-uuid/-/short-uuid-3.0.0.tgz#024db8b2077eada981902d00b047ea9003482921"
+  dependencies:
+    any-base "^1.1.0"
+    uuid "^3.2.1"
 
 socket.io-adapter@~1.1.0:
   version "1.1.1"

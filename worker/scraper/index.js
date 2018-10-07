@@ -4,7 +4,7 @@ const extraFunctions = require("./modules/extra-functions");
 
 module.exports = async function(job) {
   const { data } = job;
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   /**
    * Hooks
@@ -38,6 +38,6 @@ module.exports = async function(job) {
     outerHTML: await page.outerHTML("h1")
   };
 
-  await browser.close();
+  // await browser.close();
   return collectedData;
 };
