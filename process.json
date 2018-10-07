@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "worker",
+      "script": "./worker/index.js",
+      "instances": 2,
+      "exec_mode": "cluster"
+    },
+    {
+      "name": "master",
+      "script": "./master/index.js",
+      "instances": 2,
+      "exec_mode": "cluster"
+    }
+  ]
+}
