@@ -4,7 +4,7 @@ const extraFunctions = require("./modules/extra-functions");
 
 module.exports = async function(job) {
   const { data } = job;
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   /**
    * Hooks
@@ -13,12 +13,14 @@ module.exports = async function(job) {
    * Hook: Management
    */
   // extra management hook to start/stop process from outside
-  require("./socket")({
+  const hookOptions = {
     currentJob: job,
     currentProcess: process,
     currentBrowser: browser,
     currentPage: page
-  });
+  };
+  await require("./hooks/socket")(hookOptions);
+  await require("./hooks/headless-detection")(hookOptions);
   /**
    * Hook: Puppeteer Methods
    */
@@ -30,6 +32,7 @@ module.exports = async function(job) {
    */
   // Navigation
   await page.goto(data.url);
+  
   // Data Collection
   const collectedData = {
     collectedData: await page.data(),

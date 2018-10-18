@@ -7,9 +7,21 @@ const io = require("socket.io")("3000");
 const redisAdapter = require("socket.io-redis");
 io.adapter(redisAdapter({ host: "localhost", port: 6379 }));
 
-console.log(io);
-
 io.on("connection", socket => {
+  function roomExist(roomUUID) {
+    return new Promise((resolve, reject) => {
+      io.of("/").adapter.allRooms(function(err, rooms) {
+        if (err) {
+          return reject(err);
+        }
+        if (rooms.find(e => e === roomUUID)) {
+          resolve(true);
+        }
+        resolve(false);
+      });
+    });
+  }
+
   console.log("Client connected", io.engine.clientsCount);
 
   socket.on("disconnect", function() {
@@ -33,6 +45,15 @@ io.on("connection", socket => {
         fn({ msg: "room does not exist, won't continue" });
       }
     });
+  });
+
+  socket.on("exist", async (msg, fn) => {
+    try {
+      const _roomExist = await roomExist(msg.uuid);
+      fn({ roomExist: _roomExist });
+    } catch (error) {
+      fn({ msg: "Error Happened", error });
+    }
   });
 });
 

@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "master": "node master",
+    "worker": "node worker",
+    "dev": "concurrently \"npm run master\" \"npm run worker\""
+  },
   "dependencies": {
     "@entrptaher/add-class-methods": "^1.0.0",
     "bull": "^3.4.8",
@@ -13,6 +18,7 @@
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "socket.io-redis": "^5.2.0",
+    "concurrently": "^4.0.1",
     "yoctodelay": "^1.1.0"
   }
 }

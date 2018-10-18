@@ -18,6 +18,7 @@ module.exports = function({
     socket.emit("room", currentJob.data.uuid);
     console.log("connect from", currentJob.id);
   });
+  
   socket.on("disconnect", function() {
     console.log("disconnect from", currentJob.id);
   });
