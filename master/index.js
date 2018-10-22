@@ -14,10 +14,16 @@ const socket = io(`http://${config.host}:${config.ports.ws}`, {
 });
 const asyncSocket = require('./modules/async-socket')(socket);
 
+app.use('/', async (req, res, next) => {
+  req.props = Object.assign(req.query, req.body);
+  console.log(req.props);
+  next();
+});
+
 app.get('/', async (req, res) => {
   const {
     uuid = short().new(), url, change, cleanup: cleanupData,
-  } = req.query;
+  } = req.props;
   const cleanup = String(cleanupData) === 'true';
   if (!url) return res.send({ error: 'no url provided' });
   if (change || cleanup) {
