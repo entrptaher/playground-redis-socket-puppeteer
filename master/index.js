@@ -15,24 +15,29 @@ const socket = io(`http://${config.host}:${config.ports.ws}`, {
 const asyncSocket = require('./modules/async-socket')(socket);
 
 app.get('/', async (req, res) => {
-  const { uuid = short().new(), url } = req.query;
+  const {
+    uuid = short().new(), url, change, cleanup: cleanupData,
+  } = req.query;
+  const cleanup = String(cleanupData) === 'true';
   if (!url) return res.send({ error: 'no url provided' });
+  if (change || cleanup) {
+    if (!uuid) return res.send({ error: 'no uuid provided' });
+  }
   const exist = await asyncSocket('exist', { uuid });
-  if (exist.roomExist) {
-    console.log(exist);
+  console.log({ uuid, exist, cleanup });
+  if (cleanup) {
+    if (exist.roomExist) {
+      const resp = await asyncSocket('cleanup', { uuid });
+      return res.send({ message: 'Cleaning up', uuid, resp });
+    }
+    return res.send({ message: "room doesn't exist", uuid });
+  }
+  if (exist.roomExist || change) {
     const resp = await asyncSocket('change', { url, uuid });
     return res.send({ message: 'Room Exist', uuid, resp });
   }
   await scraperQueue.add({ url, uuid }, { attempts: 2, removeOnFail: true });
   return res.send({ message: 'Added to queue', uuid });
-});
-
-app.get('/change', async (req, res) => {
-  const { uuid, url } = req.query;
-  if (!url) return res.send({ error: 'no url provided' });
-  if (!uuid) return res.send({ error: 'no uuid provided' });
-  const resp = await asyncSocket('change', { url, uuid });
-  return res.send({ uuid, resp });
 });
 
 app.listen(config.ports.web);

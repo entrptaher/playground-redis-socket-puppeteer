@@ -26,17 +26,14 @@ function socketWalker({ currentJob, currentBrowser, currentPage }) {
   });
 
   socket.on('cleanup', async (data) => {
-    console.log([data.jobId, currentJob.id]);
-    if (data.jobId === currentJob.id) {
+    if (data.jobId === currentJob.id || data.uuid === currentJob.data.uuid) {
       try {
         const browserKilled = await wasBrowserKilled(currentBrowser);
         if (!browserKilled) {
           await currentPage.close();
           await currentBrowser.close();
         }
-        if (currentJob.remove) {
-          await currentJob.remove();
-        }
+        await currentJob.remove();
         socket.emit('leave', currentJob.data.uuid);
         // currentProcess.exit(0);
       } catch (e) {

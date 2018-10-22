@@ -15,6 +15,16 @@ const io = socketIO(config.ports.ws);
 io.adapter(redisAdapter(config.redis));
 
 io.on('connection', (socket) => {
+  function getRoom(roomUUID) {
+    return new Promise((resolve, reject) => {
+      io.of('/').adapter.allRooms((err, rooms) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(rooms.find(e => e === roomUUID));
+      });
+    });
+  }
   function roomExist(roomUUID) {
     return new Promise((resolve, reject) => {
       io.of('/').adapter.allRooms((err, rooms) => {
@@ -43,6 +53,11 @@ io.on('connection', (socket) => {
     socket.leave(room);
   });
 
+  socket.on('cleanup', (data, fn) => {
+    console.log('Should Clean up', data.uuid);
+    fn(emitCleanup(data));
+  });
+
   socket.on('change', async (msg, fn) => {
     io.of('/').adapter.allRooms((err, rooms) => {
       if (rooms.find(e => e === msg.uuid)) {
@@ -64,12 +79,16 @@ io.on('connection', (socket) => {
   });
 });
 
-// async function cleanupNotification(job, result) {
-//   const jobId = job.id;
-//   const { uuid } = job.data;
-//   console.log({ jobId, uuid, result });
-//   io.in(uuid).emit('cleanup', { jobId, uuid });
-// }
+async function emitCleanup({ jobId, uuid }) {
+  return io.in(uuid).emit('cleanup', { jobId, uuid });
+}
+
+async function cleanup(job = {}, result, socketUuid) {
+  const jobId = job.id;
+  const { uuid = socketUuid } = job.data;
+  console.log({ jobId, uuid, result });
+  io.in(uuid).emit('cleanup', { jobId, uuid });
+}
 
 /**
  * Queue Processor
