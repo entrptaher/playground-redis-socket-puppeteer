@@ -1,8 +1,8 @@
-const puppeteer = require("puppeteer");
-const addClassMethods = require("@entrptaher/add-class-methods");
-const extraFunctions = require("./modules/extra-functions");
+const puppeteer = require('puppeteer');
+const addClassMethods = require('@entrptaher/add-class-methods');
+const extraFunctions = require('./modules/extra-functions');
 
-module.exports = async function(job) {
+module.exports = async function (job) {
   const { data } = job;
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
@@ -17,10 +17,10 @@ module.exports = async function(job) {
     currentJob: job,
     currentProcess: process,
     currentBrowser: browser,
-    currentPage: page
+    currentPage: page,
   };
-  await require("./hooks/socket")(hookOptions);
-  await require("./hooks/headless-detection")(hookOptions);
+  await require('./hooks/socket')(hookOptions);
+  await require('./hooks/headless-detection')(hookOptions);
   /**
    * Hook: Puppeteer Methods
    */
@@ -32,13 +32,13 @@ module.exports = async function(job) {
    */
   // Navigation
   await page.goto(data.url);
-  
+
   // Data Collection
   const collectedData = {
     collectedData: await page.data(),
-    innerText: await page.innerText("h1"),
-    innerHTML: await page.innerHTML("h1"),
-    outerHTML: await page.outerHTML("h1")
+    innerText: await page.innerText('h1'),
+    innerHTML: await page.innerHTML('h1'),
+    outerHTML: await page.outerHTML('h1'),
   };
 
   // await browser.close();

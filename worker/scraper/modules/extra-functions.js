@@ -18,5 +18,5 @@ module.exports = extraFunctions = [
   // More examples
   async function outerHTML(selector) {
     return this.$eval(selector, e => e.outerHTML);
-  }
+  },
 ];

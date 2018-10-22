@@ -1,12 +1,12 @@
-module.exports = function({
+module.exports = function ({
   currentJob,
   currentProcess,
   currentBrowser,
-  currentPage
+  currentPage,
 }) {
-  const io = require("socket.io-client");
-  const socket = io("http://0.0.0.0:3000", {
-    transports: ["websocket"] // Only websocket works
+  const io = require('socket.io-client');
+  const socket = io('http://0.0.0.0:3000', {
+    transports: ['websocket'], // Only websocket works
   });
 
   async function wasBrowserKilled(browser) {
@@ -14,21 +14,21 @@ module.exports = function({
     return !!procInfo.signalCode;
   }
 
-  socket.on("connect", function() {
-    socket.emit("room", currentJob.data.uuid);
-    console.log("connect from", currentJob.id);
-  });
-  
-  socket.on("disconnect", function() {
-    console.log("disconnect from", currentJob.id);
+  socket.on('connect', () => {
+    socket.emit('room', currentJob.data.uuid);
+    console.log('connect from', currentJob.id);
   });
 
-  socket.on("change", function(data) {
+  socket.on('disconnect', () => {
+    console.log('disconnect from', currentJob.id);
+  });
+
+  socket.on('change', (data) => {
     console.log({ data });
     currentPage.goto(data.url);
   });
 
-  socket.on("cleanup", async function(data) {
+  socket.on('cleanup', async (data) => {
     console.log([data.jobId, currentJob.id]);
     if (data.jobId === currentJob.id) {
       try {
@@ -40,10 +40,10 @@ module.exports = function({
         if (currentJob.remove) {
           await currentJob.remove();
         }
-        socket.emit("leave", currentJob.data.uuid);
+        socket.emit('leave', currentJob.data.uuid);
         // currentProcess.exit(0);
       } catch (e) {
-        throw (`Cannot clean up`, e);
+        throw ('Cannot clean up', e);
       }
     }
   });
