@@ -1,3 +1,10 @@
+# Contents
+
+- [What is this?](#what-is-this)
+- [Installation and Running](#installation-and-running)
+- [Rest api examples](#rest-api-examples)
+- [How it's structured](#how-it's-structured)
+
 # What is this?
 
 Example of using redis queue, socket and puppeteer together for a scalable scraper.
@@ -11,6 +18,8 @@ The redis queue is perfect to talk between servers and processes, however it lac
 - Install dependencies, `yarn`.
 - Run the development version, `yarn run dev`.
 - Open browser and give appropriate commands.
+
+# Rest api examples
 
 # How it's structured
 
