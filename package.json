@@ -2,7 +2,7 @@
   "name": "playground-redis-socket-puppeteer",
   "description": "Sample repo to test socket, bull and puppeteer",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",

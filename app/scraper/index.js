@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const addClassMethods = require('@entrptaher/add-class-methods');
-const extraFunctions = require('./modules/extra-functions');
+const hooks = require('./hooks');
 
 module.exports = async function scraper(job) {
   const { data } = job;
@@ -9,9 +9,6 @@ module.exports = async function scraper(job) {
   /**
    * Hooks
    */
-  /**
-   * Hook: Management
-   */
   // extra management hook to start/stop process from outside
   const hookOptions = {
     currentJob: job,
@@ -19,13 +16,14 @@ module.exports = async function scraper(job) {
     currentBrowser: browser,
     currentPage: page,
   };
-  await require('./hooks/socket')(hookOptions);
-  await require('./hooks/headless-detection')(hookOptions);
-  /**
-   * Hook: Puppeteer Methods
-   */
+  // prevent some basic headless detection
+  await hooks.headlessDetection(hookOptions);
+
+  // add talking using socket
+  await hooks.socket(hookOptions);
+
   // Add new methods to Page class, it's available to modify at this point
-  addClassMethods(page.constructor, extraFunctions);
+  addClassMethods(page.constructor, hooks.extraFunctions);
 
   /**
    * Data Collection

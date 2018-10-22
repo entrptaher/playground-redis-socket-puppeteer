@@ -1,5 +1,3 @@
-const Queue = require('bull');
-
 /**
  * Socket to talk with process that manages browser instances
  */
@@ -90,11 +88,4 @@ async function cleanup(job = {}, result, socketUuid) {
   io.in(uuid).emit('cleanup', { jobId, uuid });
 }
 
-/**
- * Queue Processor
- */
-const scraperQueue = new Queue('simple scraper');
-// Requiring the file will make it run on this context
-// not requiring will make it sandboxed by bull
-scraperQueue.process(require(`${__dirname}/scraper/index.js`));
-scraperQueue.on('completed', cleanup).on('failed', cleanup);
+module.exports = { io, cleanup };
