@@ -1,12 +1,18 @@
+const Queue = require('bull');
+
 /**
  * Socket to talk with process that manages browser instances
  */
-const io = require('socket.io')('3000');
+const socketIO = require('socket.io');
 
 // Redis adapter makes sure all sockets on all servers get the data
 const redisAdapter = require('socket.io-redis');
+const config = require('../config');
 
-io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
+global.config = config;
+
+const io = socketIO(config.ports.ws);
+io.adapter(redisAdapter(config.redis));
 
 io.on('connection', (socket) => {
   function roomExist(roomUUID) {
@@ -18,7 +24,7 @@ io.on('connection', (socket) => {
         if (rooms.find(e => e === roomUUID)) {
           resolve(true);
         }
-        resolve(false);
+        return resolve(false);
       });
     });
   }
@@ -58,20 +64,18 @@ io.on('connection', (socket) => {
   });
 });
 
-async function notifyJobQ(job, result) {
-  const jobId = job.id;
-  const { uuid } = job.data;
-  console.log({ jobId, uuid, result });
-  io.in(uuid).emit('cleanup', { jobId, uuid });
-}
+// async function cleanupNotification(job, result) {
+//   const jobId = job.id;
+//   const { uuid } = job.data;
+//   console.log({ jobId, uuid, result });
+//   io.in(uuid).emit('cleanup', { jobId, uuid });
+// }
 
 /**
  * Queue Processor
  */
-const Queue = require('bull');
-
 const scraperQueue = new Queue('simple scraper');
 // Requiring the file will make it run on this context
 // not requiring will make it sandboxed by bull
 scraperQueue.process(require(`${__dirname}/scraper/index.js`));
-// scraperQueue.on("completed", notifyJobQ).on("failed", notifyJobQ);
+// scraperQueue.on("completed", cleanupNotification).on("failed", cleanupNotification);

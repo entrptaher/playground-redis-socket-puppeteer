@@ -1,11 +1,8 @@
-module.exports = function ({
-  currentJob,
-  currentProcess,
-  currentBrowser,
-  currentPage,
-}) {
+/* global config */
+
+function socketWalker({ currentJob, currentBrowser, currentPage }) {
   const io = require('socket.io-client');
-  const socket = io('http://0.0.0.0:3000', {
+  const socket = io(`http://${config.host}:${config.ports.ws}`, {
     transports: ['websocket'], // Only websocket works
   });
 
@@ -32,8 +29,8 @@ module.exports = function ({
     console.log([data.jobId, currentJob.id]);
     if (data.jobId === currentJob.id) {
       try {
-        const _wasBrowserKilled = await wasBrowserKilled(currentBrowser);
-        if (!_wasBrowserKilled) {
+        const browserKilled = await wasBrowserKilled(currentBrowser);
+        if (!browserKilled) {
           await currentPage.close();
           await currentBrowser.close();
         }
@@ -47,4 +44,6 @@ module.exports = function ({
       }
     }
   });
-};
+}
+
+module.exports = socketWalker;

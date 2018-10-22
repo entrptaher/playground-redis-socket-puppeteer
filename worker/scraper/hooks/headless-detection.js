@@ -1,4 +1,4 @@
-module.exports = async function ({ currentPage }) {
+async function headlessDetection({ currentPage }) {
   return currentPage.evaluateOnNewDocument(() => {
     // overwrite webdriver to be missing
     Object.defineProperty(navigator, 'webdriver', {
@@ -20,4 +20,6 @@ module.exports = async function ({ currentPage }) {
       },
     });
   });
-};
+}
+
+module.exports = headlessDetection;
