@@ -50,8 +50,8 @@ io.on('connection', (socket) => {
 
   socket.on('exist', async (msg, fn) => {
     try {
-      const _roomExist = await roomExist(msg.uuid);
-      fn({ roomExist: _roomExist });
+      const doesRoomExist = await roomExist(msg.uuid);
+      fn({ roomExist: doesRoomExist });
     } catch (error) {
       fn({ msg: 'Error Happened', error });
     }
@@ -74,4 +74,4 @@ const scraperQueue = new Queue('simple scraper');
 // Requiring the file will make it run on this context
 // not requiring will make it sandboxed by bull
 scraperQueue.process(require(`${__dirname}/scraper/index.js`));
-scraperQueue; // .on("completed", notifyJobQ).on("failed", notifyJobQ);
+// scraperQueue.on("completed", notifyJobQ).on("failed", notifyJobQ);

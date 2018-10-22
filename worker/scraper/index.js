@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const addClassMethods = require('@entrptaher/add-class-methods');
 const extraFunctions = require('./modules/extra-functions');
 
-module.exports = async function (job) {
+module.exports = async function scraper(job) {
   const { data } = job;
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();

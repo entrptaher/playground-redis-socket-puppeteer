@@ -1,5 +1,5 @@
 // Our extra methods that has access to the page instance
-module.exports = extraFunctions = [
+const extraFunctions = [
   // just some simple functions to get title and url
   async function data() {
     return { title: await this.title(), url: await this.url() };
@@ -20,3 +20,5 @@ module.exports = extraFunctions = [
     return this.$eval(selector, e => e.outerHTML);
   },
 ];
+
+module.exports = extraFunctions;
