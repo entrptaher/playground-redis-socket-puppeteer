@@ -2,13 +2,13 @@
   "apps": [
     {
       "name": "worker",
-      "script": "./app/worker/index.js",
+      "script": "./app/queue-worker/index.js",
       "instances": 2,
       "exec_mode": "cluster"
     },
     {
       "name": "master",
-      "script": "./app/master/index.js",
+      "script": "./app/queue-master/index.js",
       "instances": 2,
       "exec_mode": "cluster"
     }

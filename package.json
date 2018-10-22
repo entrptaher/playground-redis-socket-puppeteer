@@ -9,8 +9,8 @@
     "url": "https://github.com/entrptaher/playground-redis-socket-puppeteer"
   },
   "scripts": {
-    "master": "node master",
-    "worker": "node worker",
+    "master": "node app/queue-master",
+    "worker": "node app/queue-worker",
     "dev": "concurrently \"npm run master\" \"npm run worker\""
   },
   "dependencies": {
