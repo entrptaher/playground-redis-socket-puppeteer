@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
         if (err) {
           return reject(err);
         }
-        resolve(rooms.find(e => e === roomUUID));
+        return resolve(rooms.find(e => e === roomUUID));
       });
     });
   }
@@ -97,4 +97,4 @@ const scraperQueue = new Queue('simple scraper');
 // Requiring the file will make it run on this context
 // not requiring will make it sandboxed by bull
 scraperQueue.process(require(`${__dirname}/scraper/index.js`));
-// scraperQueue.on("completed", cleanupNotification).on("failed", cleanupNotification);
+scraperQueue.on('completed', cleanup).on('failed', cleanup);
