@@ -5,12 +5,12 @@ module.exports = extraFunctions = [
     return { title: await this.title(), url: await this.url() };
   },
 
-  // synthetic suger for innerText as asked
+  // synthetic sugar for innerText as asked
   async function innerText(selector) {
     return this.$eval(selector, e => e.innerText);
   },
 
-  // synthetic suger for innerHTML as asked
+  // synthetic sugar for innerHTML as asked
   async function innerHTML(selector) {
     return this.$eval(selector, e => e.innerHTML);
   },

@@ -1,24 +1,28 @@
 {
-  "name": "puppeteer-ap",
+  "name": "playground-redis-socket-puppeteer",
   "description": "Sample repo to test socket, bull and puppeteer",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/entrptaher/playground-redis-socket-puppeteer"
+  },
   "scripts": {
     "master": "node master",
     "worker": "node worker",
     "dev": "concurrently \"npm run master\" \"npm run worker\""
   },
   "dependencies": {
-    "@entrptaher/add-class-methods": "^1.0.0",
+    "@entrptaher/add-class-methods": "^2.0.0",
     "bull": "^3.4.8",
+    "concurrently": "^4.0.1",
     "express": "^4.16.3",
     "puppeteer": "^1.9.0",
     "short-uuid": "^3.0.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "socket.io-redis": "^5.2.0",
-    "concurrently": "^4.0.1",
     "yoctodelay": "^1.1.0"
   }
 }
