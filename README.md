@@ -3,7 +3,7 @@
 - [What is this?](#what-is-this)
 - [Installation and Running](#installation-and-running)
 - [Rest api examples](#rest-api-examples)
-- [How it's structured](#how-it's-structured)
+- [How it works](#how-it-works)
 
 # What is this?
 
@@ -21,15 +21,17 @@ The redis queue is perfect to talk between servers and processes, however it lac
 
 # Rest api examples
 
-# How it's structured
+# How it works
 
-The complete project resides on `app` folder. Just to make things a bit clear on the project root.
+Points:
 
-The `queue-master` and `queue-worker` is part of a redis based simple queue.
+- The complete project resides on `app` folder. Just to make things a bit clear on the project root.
+- The `queue-master` and `queue-worker` is part of a redis based simple queue.
+- Master exposes a REST api, which can be used to add new jobs to client, or give additional commands.
+- Worker runs the `scraper` module with help from socket and redis to keep alive and updating the data.
+- The `scraper` is a part of the `queue-worker` however it's also a big part itself, so kept outside to make things easier to overview.
 
-Master exposes a REST api, which can be used to add new jobs to client, or give additional commands.
-
-The `scraper` is a part of the `queue-worker` however it's also a big part, so kept outside to make things easier to overview.
+Directory Structure:
 
 - **config.js**: Basic configuration, required by the other parts and probably becomes a global
 - **queue-master**:
